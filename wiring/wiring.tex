@@ -1,0 +1,32 @@
+\documentclass[tikz]{minimal}
+\usepackage{circuitikz}
+
+\begin{document}
+\begin{circuitikz}[american]
+  % ESP32 GPIO to Gate
+  \draw (0,0) node[left]{ESP32 GPIO}
+    to[R=100$\Omega$] (2,0)
+    node[above]{G} -- (2,-1);
+
+  % Gate pulldown resistor
+  \draw (2,-1) to[R=10k$\Omega$] (2,-3) node[ground]{};
+
+  % Gate capacitor
+  \draw (2,-1) to[C=0.1$\mu$F] (4,-3) node[ground]{};
+
+  % MOSFET (2N7000 N-MOS)
+  \draw (4,0) node[nmos, anchor=G, rotate=270](mos){};
+
+  % Connect gate
+  \draw (2,-1) -- (mos.G);
+
+  % Drain to remote button pad
+  \draw (mos.D) -- ++(0,1) node[above]{Remote Button Pad};
+
+  % Source to ground
+  \draw (mos.S) node[ground]{};
+
+  % Common ground label
+  \node at (0,-3) {ESP32 GND = Remote GND};
+\end{circuitikz}
+\end{document}
