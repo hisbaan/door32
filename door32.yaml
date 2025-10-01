@@ -6,6 +6,11 @@ esphome:
     board_build.f_flash: 40000000L
     board_build.flash_mode: dio
     board_build.flash_size: 4MB
+  on_boot:
+    - priority: 600
+      then:
+        - switch.turn_off:
+            id: relay
 
 esp32:
   board: esp32-c3-devkitm-1
@@ -62,8 +67,9 @@ cover:
 switch:
   - platform: gpio
     disabled_by_default: true
-    pin: GPIO00
+    pin: GPIO10
     id: relay
+    restore_mode: ALWAYS_OFF
     on_turn_on:
       - delay: 500ms
       - switch.turn_off: relay
